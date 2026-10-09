@@ -6,3 +6,4 @@
 /node_modules/
 /assets/img/uploads/*
 !/assets/img/uploads/.gitkeep
+!/assets/img/uploads/.htaccess
