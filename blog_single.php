@@ -1,0 +1,1 @@
+<?php $kind='blog';require 'includes/detail.php';?>
