@@ -1,0 +1,1 @@
+<?php $kind='service';require 'includes/detail.php';?>

@@ -1,0 +1,1 @@
+<?php $kind='service';$title='Services';$detail='single_service';require 'includes/list.php';?>

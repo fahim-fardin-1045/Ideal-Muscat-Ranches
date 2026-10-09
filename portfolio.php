@@ -1,0 +1,1 @@
+<?php $kind='project';$title='Projects';$detail='single_project';require 'includes/list.php';?>

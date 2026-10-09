@@ -1,0 +1,1 @@
+<?php $kind='team';$title='Team';$detail='';require 'includes/list.php';?>

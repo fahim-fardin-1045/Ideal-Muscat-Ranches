@@ -1,0 +1,1 @@
+<?php require 'includes/app.php';$title='About';require 'includes/header.php';?><section class="section"><div class="container"><h1>About <?=e($s['company_name'])?></h1><p class="body-copy"><?=e($s['about'])?></p><h2>Company details</h2><p>Registered office: <?=e($s['address'])?></p><p>NIPC: <?=e($s['nipc'])?></p></div></section><?php require 'includes/footer.php';?>

@@ -1,0 +1,1 @@
+<?php $kind='project';require 'includes/detail.php';?>

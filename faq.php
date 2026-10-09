@@ -1,0 +1,1 @@
+<?php $kind='faq';$title='Frequently asked questions';$detail='';require 'includes/list.php';?>
