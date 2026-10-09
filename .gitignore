@@ -6,4 +6,4 @@
 /node_modules/
 /assets/img/uploads/*
 !/assets/img/uploads/.gitkeep
-!/assets/img/uploads/.htaccess
+!/assets/img/uploads/.htaccess/tools/create-admin.php
