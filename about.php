@@ -5,13 +5,59 @@ require 'includes/header.php';
 ?>
 
 <style>
-    /* About Banner Section */
+    /* About Banner Section with Slider */
     .about-banner {
-        background: linear-gradient(135deg, #111827 0%, #1e293b 60%, #0f172a 100%);
-        color: #ffffff;
-        padding: 70px 0 80px 0;
         position: relative;
+        color: #ffffff;
+        padding: 95px 0 105px 0;
         text-align: center;
+        overflow: hidden;
+    }
+
+    /* Slider Container */
+    .about-slider-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .about-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 1.2s ease-in-out, transform 6s ease-out;
+        transform: scale(1.05);
+    }
+
+    .about-slide.active {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* Dark Overlay for Text Readability */
+    .about-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.88) 0%, rgba(30, 41, 59, 0.78) 60%, rgba(15, 23, 42, 0.92) 100%);
+        z-index: 2;
+    }
+
+    .about-banner .container {
+        position: relative;
+        z-index: 3;
     }
 
     .about-banner::after {
@@ -22,6 +68,31 @@ require 'includes/header.php';
         right: 0;
         height: 4px;
         background: linear-gradient(90deg, #2a8f5d, #f59e0b);
+        z-index: 4;
+    }
+
+    /* Slider Dots Indicators */
+    .about-slider-dots {
+        position: absolute;
+        bottom: 20px;
+        right: 30px;
+        display: flex;
+        gap: 8px;
+        z-index: 4;
+    }
+
+    .about-dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .about-dot.active {
+        background: #f59e0b;
+        transform: scale(1.25);
     }
 
     .about-badge {
@@ -31,27 +102,30 @@ require 'includes/header.php';
         letter-spacing: 2px;
         color: #f59e0b;
         text-transform: uppercase;
-        background: rgba(245, 158, 11, 0.12);
-        border: 1px solid rgba(245, 158, 11, 0.25);
-        padding: 5px 16px;
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        padding: 6px 18px;
         border-radius: 50px;
-        margin-bottom: 15px;
+        margin-bottom: 16px;
+        backdrop-filter: blur(4px);
     }
 
     .about-title {
         font-size: 40px;
         font-weight: 800;
         color: #ffffff;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         line-height: 1.25;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
     }
 
     .about-subtitle {
         font-size: 16px;
-        color: #cbd5e1;
+        color: #e2e8f0;
         max-width: 650px;
         margin: 0 auto;
         line-height: 1.6;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
     }
 
     /* Content Section */
@@ -239,11 +313,33 @@ require 'includes/header.php';
         .about-card-box {
             padding: 24px;
         }
+        .about-slider-dots {
+            bottom: 12px;
+            right: 15px;
+        }
     }
 </style>
 
-<!-- Banner Header -->
+<!-- Banner Header with Background Slider -->
 <section class="about-banner">
+    <!-- 5 Images Background Slider -->
+    <div class="about-slider-wrap">
+        <div class="about-slide active" style="background-image: url('assets/img/bg/index1.jpeg');"></div>
+        <div class="about-slide" style="background-image: url('assets/img/bg/index2.jpeg');"></div>
+        <div class="about-slide" style="background-image: url('assets/img/bg/index3.jpeg');"></div>
+        <div class="about-slide" style="background-image: url('assets/img/bg/index4.jpeg');"></div>
+        <div class="about-slide" style="background-image: url('assets/img/bg/index5.jpeg');"></div>
+    </div>
+
+    <!-- Indicator Dots -->
+    <div class="about-slider-dots">
+        <span class="about-dot active" onclick="goToAboutSlide(0)"></span>
+        <span class="about-dot" onclick="goToAboutSlide(1)"></span>
+        <span class="about-dot" onclick="goToAboutSlide(2)"></span>
+        <span class="about-dot" onclick="goToAboutSlide(3)"></span>
+        <span class="about-dot" onclick="goToAboutSlide(4)"></span>
+    </div>
+
     <div class="container">
         <span class="about-badge">Who We Are</span>
         <h1 class="about-title">About <?= e($s['company_name']) ?></h1>
@@ -329,5 +425,48 @@ require 'includes/header.php';
         </div>
     </div>
 </section>
+
+<!-- About Slider JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var slides = document.querySelectorAll('.about-slide');
+        var dots = document.querySelectorAll('.about-dot');
+        var currentSlide = 0;
+        var slideInterval;
+
+        function showSlide(index) {
+            slides.forEach(function (slide) {
+                slide.classList.remove('active');
+            });
+            dots.forEach(function (dot) {
+                dot.classList.remove('active');
+            });
+
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        window.goToAboutSlide = function (index) {
+            showSlide(index);
+            resetTimer();
+        };
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function startTimer() {
+            slideInterval = setInterval(nextSlide, 4500); // 4.5 seconds
+        }
+
+        function resetTimer() {
+            clearInterval(slideInterval);
+            startTimer();
+        }
+
+        startTimer();
+    });
+</script>
 
 <?php require 'includes/footer.php'; ?>

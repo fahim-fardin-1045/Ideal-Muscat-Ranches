@@ -4,13 +4,58 @@ require 'includes/header.php';
 ?>
 
 <style>
-    /* Hero Section Styling */
+    /* Hero Section Styling with Slider */
     .hero-custom {
-        background: linear-gradient(135deg, #111827 0%, #1e293b 60%, #0f172a 100%);
-        color: #ffffff;
-        padding: 90px 0 100px 0;
         position: relative;
+        color: #ffffff;
+        padding: 120px 0 130px 0;
         overflow: hidden;
+    }
+
+    /* Slider Container */
+    .hero-slider-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    .hero-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 1.2s ease-in-out, transform 6s ease-out;
+        transform: scale(1.05);
+    }
+
+    .hero-slide.active {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    /* Dark Overlay for Text Readability */
+    .hero-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(17, 24, 39, 0.88) 0%, rgba(30, 41, 59, 0.75) 60%, rgba(15, 23, 42, 0.90) 100%);
+        z-index: 2;
+    }
+
+    .hero-custom .container {
+        position: relative;
+        z-index: 3;
     }
 
     .hero-custom::after {
@@ -21,6 +66,31 @@ require 'includes/header.php';
         right: 0;
         height: 4px;
         background: linear-gradient(90deg, #2a8f5d, #f59e0b);
+        z-index: 4;
+    }
+
+    /* Slider Dots Indicators */
+    .hero-slider-dots {
+        position: absolute;
+        bottom: 25px;
+        right: 40px;
+        display: flex;
+        gap: 8px;
+        z-index: 4;
+    }
+
+    .hero-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .hero-dot.active {
+        background: #f59e0b;
+        transform: scale(1.25);
     }
 
     .hero-badge {
@@ -30,11 +100,12 @@ require 'includes/header.php';
         letter-spacing: 2.5px;
         color: #f59e0b;
         text-transform: uppercase;
-        background: rgba(245, 158, 11, 0.12);
-        border: 1px solid rgba(245, 158, 11, 0.25);
+        background: rgba(245, 158, 11, 0.15);
+        border: 1px solid rgba(245, 158, 11, 0.3);
         padding: 6px 16px;
         border-radius: 50px;
         margin-bottom: 20px;
+        backdrop-filter: blur(4px);
     }
 
     .hero-title {
@@ -44,14 +115,16 @@ require 'includes/header.php';
         color: #ffffff;
         margin-bottom: 20px;
         max-width: 850px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
 
     .hero-intro {
         font-size: 18px;
         line-height: 1.7;
-        color: #cbd5e1;
+        color: #e2e8f0;
         max-width: 750px;
         margin-bottom: 35px;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
     }
 
     /* Primary CTA Button */
@@ -66,7 +139,7 @@ require 'includes/header.php';
         padding: 13px 28px;
         border-radius: 50px;
         text-decoration: none;
-        box-shadow: 0 4px 15px rgba(42, 143, 93, 0.35);
+        box-shadow: 0 4px 15px rgba(42, 143, 93, 0.45);
         transition: all 0.3s ease;
     }
 
@@ -74,7 +147,7 @@ require 'includes/header.php';
         background-color: #23764d;
         color: #ffffff;
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(42, 143, 93, 0.45);
+        box-shadow: 0 6px 20px rgba(42, 143, 93, 0.55);
         text-decoration: none;
     }
 
@@ -196,11 +269,33 @@ require 'includes/header.php';
         .about-box {
             padding: 24px;
         }
+        .hero-slider-dots {
+            bottom: 15px;
+            right: 20px;
+        }
     }
 </style>
 
-<!-- Hero Section -->
+<!-- Hero Section with Background Slider -->
 <section class="hero hero-custom">
+    <!-- 5 Images Background Slider -->
+    <div class="hero-slider-wrap">
+        <div class="hero-slide active" style="background-image: url('assets/img/bg/index1.jpeg');"></div>
+        <div class="hero-slide" style="background-image: url('assets/img/bg/index2.jpeg');"></div>
+        <div class="hero-slide" style="background-image: url('assets/img/bg/index3.jpeg');"></div>
+        <div class="hero-slide" style="background-image: url('assets/img/bg/index4.jpeg');"></div>
+        <div class="hero-slide" style="background-image: url('assets/img/bg/index5.jpeg');"></div>
+    </div>
+
+    <!-- Indicator Dots (5 Dots) -->
+    <div class="hero-slider-dots">
+        <span class="hero-dot active" onclick="goToSlide(0)"></span>
+        <span class="hero-dot" onclick="goToSlide(1)"></span>
+        <span class="hero-dot" onclick="goToSlide(2)"></span>
+        <span class="hero-dot" onclick="goToSlide(3)"></span>
+        <span class="hero-dot" onclick="goToSlide(4)"></span>
+    </div>
+
     <div class="container">
         <span class="hero-badge">AMADORA · PORTUGAL</span>
         <h1 class="hero-title"><?= e($s['headline']) ?></h1>
@@ -250,5 +345,48 @@ require 'includes/header.php';
         <?php endif; ?>
     </div>
 </section>
+
+<!-- Slider JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var slides = document.querySelectorAll('.hero-slide');
+        var dots = document.querySelectorAll('.hero-dot');
+        var currentSlide = 0;
+        var slideInterval;
+
+        function showSlide(index) {
+            slides.forEach(function (slide) {
+                slide.classList.remove('active');
+            });
+            dots.forEach(function (dot) {
+                dot.classList.remove('active');
+            });
+
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        window.goToSlide = function (index) {
+            showSlide(index);
+            resetTimer();
+        };
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function startTimer() {
+            slideInterval = setInterval(nextSlide, 4500); // 4.5 seconds
+        }
+
+        function resetTimer() {
+            clearInterval(slideInterval);
+            startTimer();
+        }
+
+        startTimer();
+    });
+</script>
 
 <?php require 'includes/footer.php'; ?>
