@@ -235,7 +235,7 @@ require 'includes/header.php';
 
                     
                     $member_name = $member['name'] ?? $member['title'] ?? 'Team Member';
-                    $member_role = $member['designation'] ?? $member['role'] ?? $member['position'] ?? 'Specialist';
+                    $member_role = $member['designation'] ?? $member['role'] ?? $member['position'] ?? (trim((string)($member['body'] ?? '')) !== '' ? $member['body'] : 'Team Member');
                     $member_bio  = $member['summary'] ?? $member['bio'] ?? $member['about'] ?? '';
                     ?>
                     <div class="col-lg-3 col-md-6">

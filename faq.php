@@ -240,7 +240,7 @@ require 'includes/header.php';
                             <?php 
                            
                             $question = $item['title'] ?? $item['question'] ?? 'Question';
-                            $answer = $item['content'] ?? $item['answer'] ?? $item['summary'] ?? $item['description'] ?? '';
+                            $answer = (trim((string)($item['body'] ?? '')) !== '' ? $item['body'] : ($item['content'] ?? $item['answer'] ?? $item['summary'] ?? $item['description'] ?? ''));
                             
                             $is_first = ($index === 0) ? 'active' : '';
                             ?>
